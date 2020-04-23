@@ -24,7 +24,7 @@ src
 
 1. src/store/modules/counter.ts
 
-```
+```jsx
 import { observable, action, runInAction } from "mobx";
 
 class Counter extends StoreModule {
@@ -58,7 +58,7 @@ export default new Counter();
 
 2. src/store/index.ts
 
-```
+```jsx
 import { createContext, useContext } from "react";
 import { configure } from "mobx";
 
@@ -67,7 +67,7 @@ import counter from "./modules/counter";
 configure({ enforceActions: "observed" });
 
 const storesContext = createContext({
-  counter
+  counter,
 });
 
 export const useStores = () => useContext(storesContext);
@@ -75,7 +75,7 @@ export const useStores = () => useContext(storesContext);
 
 3. src/index.ts
 
-```
+```jsx
 import React from "react";
 import ReactDOM from "react-dom";
 import { observer } from "mobx-react";
@@ -84,16 +84,13 @@ import { useStores } from "@/stroe";
 const App = observer(() => {
   const { counter } = useStores();
   return (
-   <>
-    <p>count: {counter.count}</p>
-    <button onClick={counter.add}>add</button>
-    <button onClick={counter.sub}>sub</button>
-   </>
-  )
-})
+    <>
+      <p>count: {counter.count}</p>
+      <button onClick={counter.add}>add</button>
+      <button onClick={counter.sub}>sub</button>
+    </>
+  );
+});
 
-ReactDOM.render(
-  <App />,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
