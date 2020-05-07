@@ -8,7 +8,7 @@
 
 ## 方案
 
-`store.js`用来处理兼容性, `crypto-js`用来加密. 并封装一个工具方法用来系统管理`localStorage`.
+[store](https://www.npmjs.com/package/store)用来处理兼容性, [crypto-js](https://www.npmjs.com/package/crypto-js)用来加密. 并封装一个工具方法用来系统管理`localStorage`.
 
 ## 加/解密
 
