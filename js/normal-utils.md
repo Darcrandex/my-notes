@@ -436,3 +436,65 @@ function numberAbbreviation(number = 0, count = 0): string {
 ```js
 const s = numberAbbreviation(123456789, 1); //123.4M
 ```
+
+## 从 url 中保存和获取对象类型参数
+
+```js
+const URLQuery = {
+  toSearch(obj = {}, searchKey = "query") {
+    if (typeof obj !== "object") {
+      return "";
+    }
+
+    const str = JSON.stringify(obj);
+    const encodeStr = window.btoa(unescape(encodeURIComponent(str)));
+    return `?${searchKey}=${encodeStr}`;
+  },
+
+  toObject(searchKey = "query") {
+    const url = window.location.href;
+    const hasSearch = url.split("?").length > 1;
+
+    if (!hasSearch) {
+      return {};
+    }
+
+    const searchStr = url.split("?")[1];
+    const searchKeyValueArr = searchStr.split("&");
+    let encodeQueryStr = "";
+
+    for (let i = 0; i < searchKeyValueArr.length; i++) {
+      const [key, value] = searchKeyValueArr[i].split("=");
+      if (key === searchKey) {
+        encodeQueryStr = value;
+        break;
+      }
+    }
+
+    const str = decodeURIComponent(escape(window.atob(encodeQueryStr)));
+    try {
+      return JSON.parse(str);
+    } catch (err) {
+      console.error(err);
+      return {};
+    }
+  },
+};
+```
+
+使用:
+
+在 url 上添加 search 字符串
+
+```js
+const params = { a: 1, b: "", c: [] };
+const search = URLQuery.toSearch(params);
+
+window.location.href += search;
+```
+
+从 url 上获取 search 转化的对象参数
+
+```js
+const objectFromSearch = URLQuery.toObject();
+```
