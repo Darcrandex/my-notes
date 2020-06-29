@@ -48,14 +48,16 @@ const scrollTop = $el.scrollTop();
 
 完整代码.这里添加了到达底部触发值`offset`,还添加了防抖处理.
 
-```jsx
+```js
 function bindReachBottom(
   callback = () => {},
   { getElement = () => window, offset = 50, delay = 200 } = {}
 ) {
   const el = getElement();
   let timer = null;
-  $(el).on("scroll", function () {
+
+  // 绑定函数
+  function handleBottom() {
     timer && clearTimeout(timer);
     timer = setTimeout(() => {
       const viewHeight = $(el).height();
@@ -69,6 +71,25 @@ function bindReachBottom(
         callback && callback({ viewHeight, contentHeight, scrollTop });
       }
     }, delay);
-  });
+  }
+
+  $(el).on("scroll", handleBottom);
+
+  // 最后返回一个解绑函数
+  function cancelHandle() {
+    $(el).off("scroll", handleBottom);
+  }
+
+  return cancelHandle;
 }
+```
+
+使用
+
+```js
+const unbind = bindReachBottom(() => {
+  console.log("bottom");
+});
+
+$("#unbind").on("click", unbind);
 ```
