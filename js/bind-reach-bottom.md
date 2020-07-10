@@ -86,10 +86,25 @@ function bindReachBottom(
 
 使用
 
-```js
-const unbind = bindReachBottom(() => {
-  console.log("bottom");
-});
+```html
+<ul id="list-container">
+  <li></li>
+</ul>
+```
 
+```js
+// 绑定事件
+const unbind = bindReachBottom(
+  () => {
+    console.log("bottom");
+  },
+  {
+    getElement: () => document.getElementById("list-container"),
+    offset: 100,
+    delay: 1000,
+  }
+);
+
+// 主动解绑事件
 $("#unbind").on("click", unbind);
 ```
