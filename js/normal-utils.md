@@ -138,18 +138,26 @@ function hsla2rgba(h = 0, s = 1, l = 0.5, a = 1) {
 ## 随机字符串
 
 ```ts
-function randomStr(len: number = 16): string {
+function randomStr(len: number = 16, startWithLetter: boolean = true): string {
   if (len < 1) {
     return "";
   }
-  const string =
+
+  const chars =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const l = string.length;
+  const letterChars = chars.slice(10);
+
+  const getChar = (chars = "") => {
+    return chars[Math.floor(Math.random() * chars.length)];
+  };
+
   let str = "";
-  for (let i = 0; i < len; i++) {
-    const index = Math.floor((Math.random() * 100 * l) % l);
-    str += string[index];
+  for (let i = 1; i < len; i++) {
+    str += getChar(chars);
   }
+
+  str = getChar(startWithLetter ? letterChars : chars) + str;
+
   return str;
 }
 ```
